@@ -88,7 +88,7 @@ class ProductsView extends GetView<ProductsController> {
                           const SizedBox(height: 8),
                           Obx(() {
                             return DropdownButtonFormField<String?>(
-                              value: controller.filterCategoryId.value,
+                              initialValue: controller.filterCategoryId.value,
                               decoration: InputDecoration(
                                 labelText: tr('all_categories'),
                                 border: const OutlineInputBorder(),

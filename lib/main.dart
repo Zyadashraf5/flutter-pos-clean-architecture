@@ -49,7 +49,7 @@ class CashiereApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Cashiere Systems new',
+      title: 'Cashiere POS',
       debugShowCheckedModeBanner: false,
       locale: Get.locale ?? const Locale('ar'),
       fallbackLocale: const Locale('en'),

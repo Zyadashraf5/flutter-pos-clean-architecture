@@ -48,7 +48,7 @@ class ProductFirestoreModel {
   };
 
   factory ProductFirestoreModel.fromFirestore(Map<String, dynamic> data) {
-    print('Creating ProductFirestoreModel from data: $data');
+
     return ProductFirestoreModel(
       id: data['id'] as String? ?? '',
       name: data['name'] as String? ?? '',

@@ -57,12 +57,9 @@ class FirebaseProductFirestoreDataSourceImpl
         .where('barcode', isEqualTo: barcode)
         .limit(1)
         .get();
-    print(
-      'getByBarcode: found ${snapshot.docs.length} documents for barcode "$barcode"',
-    );
     if (snapshot.docs.isEmpty) return null;
     final d = snapshot.docs.first;
-    print('getByBarcode: document data: ${d.data()}');
+
     final data = d.data();
     data['id'] = d.id;
     return ProductFirestoreModel.fromFirestore(data);

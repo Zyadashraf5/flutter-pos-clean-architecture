@@ -239,8 +239,9 @@ class _ResponsiveCardGrid extends StatelessWidget {
         if (j < crossAxisCount - 1) rowChildren.add(const SizedBox(width: 16));
       }
       rows.add(Row(children: rowChildren));
-      if (i + crossAxisCount < children.length)
+      if (i + crossAxisCount < children.length) {
         rows.add(const SizedBox(height: 12));
+      }
     }
     return Column(children: rows);
   }
@@ -321,8 +322,9 @@ class _DailySalesChart extends StatelessWidget {
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
                   final i = value.toInt();
-                  if (i < 0 || i >= entries.length)
+                  if (i < 0 || i >= entries.length) {
                     return const SizedBox.shrink();
+                  }
                   final day = entries[i].key;
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),

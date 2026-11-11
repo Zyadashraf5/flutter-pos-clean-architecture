@@ -445,7 +445,7 @@ class InventoryDeviceFormView extends GetView<InventoryController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DropdownButtonFormField<ReceivingPaymentMethod>(
-                          value: selectedPayment.value,
+                          initialValue: selectedPayment.value,
                           decoration: InputDecoration(
                             labelText: tr('payment_type', 'Payment Type'),
                           ),
@@ -520,7 +520,7 @@ class InventoryDeviceFormView extends GetView<InventoryController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               DropdownButtonFormField<ReceivingPaymentMethod>(
-                                value: selectedPayment.value,
+                                initialValue: selectedPayment.value,
                                 decoration: InputDecoration(
                                   labelText: tr('payment_type', 'Payment Type'),
                                 ),
@@ -657,7 +657,7 @@ class InventoryDeviceFormView extends GetView<InventoryController> {
                     );
                   }
                   return DropdownButtonFormField<String>(
-                    value: selectedCategoryId.value,
+                    initialValue: selectedCategoryId.value,
                     decoration: InputDecoration(
                       labelText: tr('category', 'Category'),
                       hintText: tr('select_category', 'Select Category'),

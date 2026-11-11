@@ -63,8 +63,9 @@ class FinancialController extends GetxController {
   }
 
   void loadSummaryStream() {
-    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial))
+    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial)) {
       return;
+    }
     loading.value = true;
     _summarySub?.cancel();
     _summarySub = _financialRepository.watchSummary().listen(
@@ -79,8 +80,9 @@ class FinancialController extends GetxController {
   }
 
   Future<void> loadSummaryOnce() async {
-    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial))
+    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial)) {
       return;
+    }
     loading.value = true;
     try {
       summary.value = await _getFinancialSummary();
@@ -94,15 +96,17 @@ class FinancialController extends GetxController {
   }
 
   Future<void> saveDefaultTax(double value) async {
-    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial))
+    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial)) {
       return;
+    }
     await _setDefaultTax(value);
     defaultTaxPercent.value = value;
   }
 
   Future<void> loadOrdersAndAnalytics() async {
-    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial))
+    if (!Get.find<AuthController>().hasPermissionEnum(Permission.viewFinancial)) {
       return;
+    }
     try {
       _orders = await _getOrders();
       _devices = await _getDevices();
@@ -183,8 +187,9 @@ class FinancialController extends GetxController {
       final next = DateTime(d.year, d.month + 1, 1);
       double sum = 0;
       for (final o in _orders) {
-        if (!o.createdAt.isBefore(d) && o.createdAt.isBefore(next))
+        if (!o.createdAt.isBefore(d) && o.createdAt.isBefore(next)) {
           sum += o.total;
+        }
       }
       months.add(sum);
     }
@@ -197,8 +202,9 @@ class FinancialController extends GetxController {
       final dayEnd = DateTime(now.year, now.month, d, 23, 59, 59);
       double sum = 0;
       for (final o in _orders) {
-        if (!o.createdAt.isBefore(dayStart) && !o.createdAt.isAfter(dayEnd))
+        if (!o.createdAt.isBefore(dayStart) && !o.createdAt.isAfter(dayEnd)) {
           sum += o.total;
+        }
       }
       dayList.add(_DaySale(d, sum));
     }
