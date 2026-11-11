@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 
 import '../../core/routes/app_routes.dart';
+import '../auth/auth_controller.dart';
 import '../../data/datasources/local/local_storage.dart';
 
 class MainController extends GetxController {
@@ -12,6 +13,7 @@ class MainController extends GetxController {
   final sidebarOpen = false.obs;
 
   void goTo(String route) {
+    if (!Get.find<AuthController>().canAccessRoute(route)) return;
     currentRoute.value = route;
     // Auto-close sidebar on mobile after navigation
     sidebarOpen.value = false;

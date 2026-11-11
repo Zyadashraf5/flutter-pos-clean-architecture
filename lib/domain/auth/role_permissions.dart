@@ -27,7 +27,6 @@ class RolePermissions {
   }
 
   static bool canAccessRoute(UserRole role, String route) {
-    if (hasPermission(role, fullAccess)) return true;
     final routeToPermission = <String, String>{
       '/': dashboard,
       '/dashboard': dashboard,
@@ -48,7 +47,7 @@ class RolePermissions {
       '/employees': admin,
     };
     final perm = routeToPermission[route];
-    if (perm == null) return true;
+    if (perm == null) return false;
     return hasPermission(role, perm);
   }
 }
