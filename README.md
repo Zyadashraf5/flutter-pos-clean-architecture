@@ -4,7 +4,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.35%2B-02569B?logo=flutter)
 ![Architecture](https://img.shields.io/badge/architecture-Clean%20Architecture-0A7)
 
-A point-of-sale and back-office app for phone and electronics shops. Staff sell devices by serial number, track stock and supplier debt, and see cash, credit and tax totals, in Arabic or English. Built with Flutter, GetX, Hive for local storage and Cloud Firestore for sync.
+A point-of-sale and back-office app for phone and electronics shops. Staff sell devices by serial number, track stock and supplier debt, and see cash, credit and tax totals, in Arabic or English. Built with Flutter, GetX, Hive for local storage and Cloud Firestore integration.
 
 **Portfolio demo:** client-side authentication and non-transactional financial writes need further work before production use. See [Known limitations](#known-limitations).
 
@@ -38,7 +38,7 @@ Small phone shops usually juggle a notebook for sales, a spreadsheet for stock a
 | Financial summary | Cash, credit, total sales, taxes collected and supplier debt, with charts (`fl_chart`). |
 | Staff & roles | Admin, manager, cashier, inventory staff and accountant roles. Each screen route is mapped to a permission. |
 | Arabic / English | Full RTL layout, language saved per device. |
-| Offline-first | Hive local storage; Firestore is read first and the app falls back to local data when it is unavailable. |
+| Local caching | Hive local storage; Firestore is read first and the app falls back to local data when it is unavailable. |
 
 ## Architecture
 
@@ -82,6 +82,8 @@ The domain layer keeps business rules separate from widgets, Firestore and Hive.
 Flutter · Dart 3.9 · GetX (state, routing, DI) · Hive · Cloud Firestore · bcrypt · fl_chart · mobile_scanner · qr_flutter · intl · GitHub Actions
 
 ## Local showcase with fictional data
+
+Prerequisites for this local demo: Firebase CLI, Node 22, Java 21, Python 3 and Flutter. Install the Firebase CLI separately if it is not already available.
 
 The desktop-style screens can be reviewed in a web build without production credentials. Use a local Firestore emulator on **127.0.0.1:8081**, the demo-only config `firebase.emulator.json`, and the explicit project id **demo-cashiere**. The standard `firebase.json` and `firestore.rules` remain separate.
 
@@ -142,7 +144,7 @@ flutter test
 | `test/domain/navigation_access_test.dart` | Signed-out sessions, direct navigation by role, and cleared sessions |
 | `test/widget_test.dart` | App theme builds |
 
-GitHub Actions runs strict `flutter analyze`, `flutter test` and a release web build on every push and pull request (`.github/workflows/ci.yml`).
+GitHub Actions runs strict `flutter analyze`, `flutter test` a release web build and an Android debug build on every push and pull request (`.github/workflows/ci.yml`).
 
 ## Known limitations
 
@@ -151,7 +153,7 @@ Written down on purpose, as the next steps for this codebase:
 - **Authentication runs on the client.** Staff log in against the `employees` collection and the bcrypt hash is verified on the device; there is no Firebase Auth session. Permissions are enforced in the app, not on the server. The included `firestore.rules` assume Firebase Auth, so they do not match the current login flow. Moving login to Firebase Auth (with custom claims for roles) is the planned fix.
 - **Two role models exist** (`EmployeeRole` for staff records and `UserRole` for the session). They are mapped in one place (`AuthRepositoryImpl`) and should be merged.
 - **Multi-step writes are not transactional.** The order is saved first and the inventory and financial updates follow; if a follow-up step fails it is logged rather than retried.
-- Android and Windows are the main targets. The other Flutter platform folders are scaffolding and have not been tested.
+- Release web compilation and Android debug compilation are verified in CI. The demo UI was exercised in a browser; native Android/iOS/Windows runtime behavior still needs platform-specific testing.
 
 ## Author
 
