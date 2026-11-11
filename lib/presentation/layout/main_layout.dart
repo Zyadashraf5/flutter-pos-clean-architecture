@@ -189,6 +189,9 @@ class MainLayout extends GetView<MainController> {
   }
 
   Widget _buildContent(String route) {
+    if (!Get.find<AuthController>().canAccessRoute(route)) {
+      return const Center(child: Text('Access denied'));
+    }
     _ensureBinding(route);
     switch (route) {
       case AppRoutes.dashboard:

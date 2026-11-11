@@ -3,9 +3,7 @@ import 'package:cashiere_system/domain/auth/role_permissions.dart';
 import 'package:cashiere_system/domain/entities/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Every screen behind the login. Unknown routes are allowed by default, so a
-/// route that is missing from the permission map is open to every role; these
-/// tests fail if a new screen is added without a mapping.
+/// Access matrix for known screens plus fail-closed checks for unmapped routes.
 const screens = <String>{
   AppRoutes.dashboard,
   AppRoutes.categories,
@@ -36,6 +34,13 @@ void expectAccess(UserRole role, Set<String> allowed) {
 }
 
 void main() {
+  test('unmapped routes are denied for every role, including admins', () {
+    for (final role in UserRole.values) {
+      expect(RolePermissions.canAccessRoute(role, '/unmapped-screen'), isFalse);
+      expect(RolePermissions.canAccessRoute(role, ''), isFalse);
+    }
+  });
+
   test('finance users only reach the dashboard and financials', () {
     expectAccess(UserRole.finance, {AppRoutes.dashboard, AppRoutes.financial});
   });
