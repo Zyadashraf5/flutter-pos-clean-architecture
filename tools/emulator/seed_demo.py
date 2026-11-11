@@ -1,12 +1,13 @@
 """Generate fictional data in the loopback-only demo-cashiere emulator."""
 import datetime
 import json
+import os
 import pathlib
 import subprocess
 import urllib.request
 
 root = pathlib.Path(__file__).resolve().parents[2]
-password_hash = subprocess.check_output(['dart', 'run', 'tools/emulator/hash_demo.dart'], cwd=root, text=True, shell=True).strip().splitlines()[-1]
+password_hash = subprocess.check_output(['dart', 'run', 'tools/emulator/hash_demo.dart'], cwd=root, text=True, shell=os.name == 'nt').strip().splitlines()[-1]
 assert password_hash.startswith('$2')
 timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00', 'Z')
 
