@@ -266,7 +266,7 @@ class EmployeesView extends GetView<EmployeesController> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<EmployeeRole>(
-                    value: role,
+                    initialValue: role,
                     decoration: InputDecoration(labelText: tr('role')),
                     items: EmployeeRole.values
                         .map(
@@ -307,10 +307,11 @@ class EmployeesView extends GetView<EmployeesController> {
                   isActive: isActive,
                 );
                 if (ctx.mounted) Navigator.of(ctx).pop();
-                if (ok)
+                if (ok) {
                   Get.snackbar(tr('success'), tr('employee_added'));
-                else
+                } else {
                   Get.snackbar(tr('error'), tr('failed_to_add_employee'));
+                }
               },
               child: Text(tr('create')),
             ),
@@ -355,7 +356,7 @@ class EmployeesView extends GetView<EmployeesController> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<EmployeeRole>(
-                    value: role,
+                    initialValue: role,
                     decoration: InputDecoration(labelText: tr('role')),
                     items: EmployeeRole.values
                         .map(
@@ -396,10 +397,11 @@ class EmployeesView extends GetView<EmployeesController> {
                   isActive: isActive,
                 );
                 if (ctx.mounted) Navigator.of(ctx).pop();
-                if (ok)
+                if (ok) {
                   Get.snackbar(tr('success'), tr('employee_updated'));
-                else
+                } else {
                   Get.snackbar(tr('error'), tr('failed_to_update_employee'));
+                }
               },
               child: Text(tr('update')),
             ),
@@ -442,10 +444,11 @@ class EmployeesView extends GetView<EmployeesController> {
                 passwordC.text,
               );
               if (ctx.mounted) Navigator.of(ctx).pop();
-              if (ok)
+              if (ok) {
                 Get.snackbar(tr('success'), tr('password_reset'));
-              else
+              } else {
                 Get.snackbar(tr('error'), tr('failed_to_reset_password'));
+              }
             },
             child: Text(tr('update')),
           ),
@@ -510,7 +513,7 @@ class _FiltersRow extends GetView<EmployeesController> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<EmployeeRole?>(
-            value: controller.roleFilter.value,
+            initialValue: controller.roleFilter.value,
             decoration: InputDecoration(
               labelText: tr('filter_by_role'),
               border: const OutlineInputBorder(),
@@ -561,7 +564,7 @@ class _FiltersRow extends GetView<EmployeesController> {
           SizedBox(
             width: 180,
             child: DropdownButtonFormField<EmployeeRole?>(
-              value: controller.roleFilter.value,
+              initialValue: controller.roleFilter.value,
               decoration: InputDecoration(
                 labelText: tr('filter_by_role'),
                 border: const OutlineInputBorder(),

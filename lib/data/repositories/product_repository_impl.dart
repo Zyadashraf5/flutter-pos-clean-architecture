@@ -73,7 +73,7 @@ class ProductRepositoryImpl implements ProductRepository {
     if (_firestoreRead != null) {
       try {
         final model = await _firestoreRead.getByBarcode(barcode);
-        print('getByBarcode: Firestore returned model: $model');
+
         if (model != null) return _firestoreModelToEntity(model);
       } catch (_) {}
     }
@@ -163,7 +163,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   ProductEntity _firestoreModelToEntity(ProductFirestoreModel m) {
-    print('Mapping Firestore model to entity: $m');
+
     return ProductEntity(
       id: m.id,
       name: m.name,

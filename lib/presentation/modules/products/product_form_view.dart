@@ -129,7 +129,7 @@ class ProductFormView extends GetView<ProductsController> {
                           ? controller.categories.first.id
                           : null);
                   return DropdownButtonFormField<String>(
-                    value: value,
+                    initialValue: value,
                     decoration: InputDecoration(labelText: tr('category')),
                     items: controller.categories
                         .map(

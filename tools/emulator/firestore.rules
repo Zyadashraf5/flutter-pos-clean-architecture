@@ -1,0 +1,6 @@
+// LOCAL DEMONSTRATION ONLY. Never deploy this file. The legacy POS login
+// does not create Firebase Auth sessions. Bind only to loopback with demo data.
+rules_version = '2';
+service cloud.firestore { match /databases/{database}/documents {
+  match /{document=**} { allow read, write: if true; }
+}}

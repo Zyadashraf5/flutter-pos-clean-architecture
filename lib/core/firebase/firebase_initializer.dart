@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import '../constants/app_constants.dart';
@@ -17,6 +18,15 @@ class FirebaseInitializer {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    if (const bool.fromEnvironment('USE_FIREBASE_EMULATORS')) {
+      if (!Firebase.app().options.projectId.startsWith('demo-')) {
+        throw StateError('Emulator mode requires a demo- project id.');
+      }
+      FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8081);
+      FirebaseFirestore.instance.settings = const Settings(
+        persistenceEnabled: false,
+      );
+    }
     _initialized = true;
   }
 

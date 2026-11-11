@@ -89,8 +89,9 @@ class PurchaseCreateController extends GetxController {
   }
 
   Future<bool> submit() async {
-    if (!Get.find<AuthController>().hasPermissionEnum(Permission.updateStock))
+    if (!Get.find<AuthController>().hasPermissionEnum(Permission.updateStock)) {
       return false;
+    }
     if (lines.isEmpty) return false;
     final validLines = lines
         .where(

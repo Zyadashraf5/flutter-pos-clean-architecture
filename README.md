@@ -8,6 +8,20 @@ A point-of-sale and back-office app for phone and electronics shops. Staff sell 
 
 **Portfolio demo:** client-side authentication and non-transactional financial writes need further work before production use. See [Known limitations](#known-limitations).
 
+## Screenshots
+
+Actual web screenshots from a loopback-only emulator, with fictional inventory and financial figures.
+
+![Arabic dashboard with sales and inventory overview](docs/screenshots/dashboard-desktop.png)
+
+<details>
+<summary>English dashboard and device inventory</summary>
+
+![English dashboard](docs/screenshots/dashboard-english.png)
+![Device inventory with fictional serial numbers](docs/screenshots/inventory-desktop.png)
+
+</details>
+
 ## The problem it solves
 
 Small phone shops usually juggle a notebook for sales, a spreadsheet for stock and WhatsApp for supplier balances. Each used device is unique (serials, battery health, condition), so a generic quantity-based POS does not fit. Cashiere keeps one record per device, ties every sale to who made it, and keeps the shop's money position (cash, credit, taxes, money owed to suppliers) up to date as sales and purchases happen.
@@ -67,9 +81,29 @@ The domain layer keeps business rules separate from widgets, Firestore and Hive.
 
 Flutter · Dart 3.9 · GetX (state, routing, DI) · Hive · Cloud Firestore · bcrypt · fl_chart · mobile_scanner · qr_flutter · intl · GitHub Actions
 
+## Local showcase with fictional data
+
+The desktop-style screens can be reviewed in a web build without production credentials. Use a local Firestore emulator on **127.0.0.1:8081**, the demo-only config `firebase.emulator.json`, and the explicit project id **demo-cashiere**. The standard `firebase.json` and `firestore.rules` remain separate.
+
+```bash
+flutter pub get
+firebase emulators:start --only firestore --project demo-cashiere --config firebase.emulator.json
+```
+
+In a second terminal:
+
+```bash
+python tools/emulator/seed_demo.py
+flutter run -d chrome --dart-define-from-file=firebase.demo.json
+```
+
+Demo login: **demo@example.com / demo-only-password**. Products, financial figures, names and serial numbers are fictional. The seed script sends data only to the loopback demo project.
+
+**Important:** the legacy login is client-side. The demonstration emulator rules intentionally allow local fixture access; **never deploy `tools/emulator/firestore.rules`** or connect this demonstration to real data. Server-side authentication and atomic financial processing are explicit production limitations below.
+
 ## Getting started
 
-Requirements: Flutter 3.35 or newer (stable channel) and a Firebase project with Cloud Firestore enabled.
+Requirements: Flutter stable (tested with 3.47.9) (stable channel) and a Firebase project with Cloud Firestore enabled.
 
 ```bash
 git clone https://github.com/Zyadashraf5/flutter-pos-clean-architecture.git
@@ -104,10 +138,11 @@ flutter test
 | `test/domain/create_order_test.dart` | Validation (empty orders, quantities, negative prices or tax), total recalculation, save-before-side-effects ordering, cash vs credit, devices marked as sold |
 | `test/domain/purchases_and_suppliers_test.dart` | Purchase persistence order, stock increases with purchase price, credit debt, supplier payments |
 | `test/domain/auth_and_permissions_test.dart` | bcrypt hashing, login rules (email normalisation, generic errors, disabled accounts), role permission matrix |
-| `test/domain/route_access_test.dart` | Every screen route is mapped to a permission for every role |
+| `test/domain/route_access_test.dart` | Known-screen permissions and fail-closed behavior for unmapped routes |
+| `test/domain/navigation_access_test.dart` | Signed-out sessions, direct navigation by role, and cleared sessions |
 | `test/widget_test.dart` | App theme builds |
 
-GitHub Actions runs `flutter analyze` and `flutter test` on every push and pull request (`.github/workflows/ci.yml`).
+GitHub Actions runs strict `flutter analyze`, `flutter test` and a release web build on every push and pull request (`.github/workflows/ci.yml`).
 
 ## Known limitations
 
@@ -121,3 +156,5 @@ Written down on purpose, as the next steps for this codebase:
 ## Author
 
 **Zyad Ashraf**, Flutter developer · [LinkedIn](https://www.linkedin.com/in/zyad-ashraf-flutter) · [Upwork](https://www.upwork.com/freelancers/~01f783ee63786311ea)
+
+On Windows, Flutter may require Developer Mode for native plugin symlinks. Web compilation can be verified independently of a signed native release.
