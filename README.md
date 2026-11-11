@@ -6,6 +6,8 @@
 
 A point-of-sale and back-office app for phone and electronics shops. Staff sell devices by serial number, track stock and supplier debt, and see cash, credit and tax totals, in Arabic or English. Built with Flutter, GetX, Hive for local storage and Cloud Firestore for sync.
 
+**Portfolio demo:** client-side authentication and non-transactional financial writes need further work before production use. See [Known limitations](#known-limitations).
+
 ## The problem it solves
 
 Small phone shops usually juggle a notebook for sales, a spreadsheet for stock and WhatsApp for supplier balances. Each used device is unique (serials, battery health, condition), so a generic quantity-based POS does not fit. Cashiere keeps one record per device, ties every sale to who made it, and keeps the shop's money position (cash, credit, taxes, money owed to suppliers) up to date as sales and purchases happen.
@@ -31,7 +33,7 @@ flowchart LR
   subgraph Presentation["presentation (GetX)"]
     V[Views] --> C[Controllers]
   end
-  subgraph Domain["domain (pure Dart)"]
+  subgraph Domain["domain (entities, use cases, contracts)"]
     UC[Use cases] --> RI[Repository interfaces]
     E[Entities]
     P[Role permissions]
@@ -52,7 +54,7 @@ lib/
 └── presentation/   one module per screen: binding + controller + view
 ```
 
-The domain layer has no Flutter UI, Firestore or Hive imports, so business rules are tested with in-memory fakes (see `test/support/fakes.dart`).
+The domain layer keeps business rules separate from widgets, Firestore and Hive. Some use cases currently import Flutter foundation for logging, so it is not a standalone pure-Dart package. Business rules are tested with in-memory fakes (see `test/support/fakes.dart`).
 
 ### Design decisions
 
